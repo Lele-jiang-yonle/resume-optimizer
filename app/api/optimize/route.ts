@@ -47,19 +47,19 @@ const SYSTEM_PROMPT = `
 输出顺序：
 1. 【原始版本备份区】
 2. 【优化版简历】
+3. 【关键提升点】（3-5条核心改动方向）
 
 **不要生成修改批注或对比表格。**
-一个【关键提升点】小节，用3-5条简短要点说明本次优化的核心改动方向（例如：量化了播放量、补充了项目背景、调整为STAR结构等），不要生成详细批注表格。
 `;
 
-const client = new OpenAI({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-  baseURL: 'https://api.deepseek.com',
-});
-
 export async function POST(req: NextRequest) {
-  const { resumeText, jdText, industry, answers } = await req.json();
+  // 延迟初始化，保证运行时才读取环境变量
+  const client = new OpenAI({
+    apiKey: process.env.ANTHROPIC_API_KEY,
+    baseURL: 'https://api.deepseek.com',
+  });
 
+  const { resumeText, jdText, industry, answers } = await req.json();
   const userMessage = `行业：${industry}\n\n【原始简历】\n${resumeText}\n\n【JD】\n${jdText}\n\n【用户答案】\n${answers}`;
 
   try {
