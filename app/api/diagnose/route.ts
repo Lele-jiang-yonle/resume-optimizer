@@ -31,12 +31,13 @@ JSON 结构必须如下：
 - 输出必须是纯净的 JSON，不要包含任何解释文字或代码块标记。
 `;
 
-const client = new OpenAI({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-  baseURL: 'https://api.deepseek.com',
-});
-
 export async function POST(req: NextRequest) {
+  // 延迟初始化，保证运行时才读取环境变量
+  const client = new OpenAI({
+    apiKey: process.env.ANTHROPIC_API_KEY,
+    baseURL: 'https://api.deepseek.com',
+  });
+
   const { resumeText, jdText, industry } = await req.json();
   const userMessage = `行业风格：${industry}\n\n【职位描述】\n${jdText}\n\n【我的简历】\n${resumeText}`;
 
@@ -50,19 +51,19 @@ export async function POST(req: NextRequest) {
       ],
     });
 
-    const raw = response.choices?.[0]?.message?.content?.trim();
-    if (!raw) {
+    const content = response.choices?.[0]?.message?.content?.trim();
+    if (!content) {
       throw new Error('模型未返回有效的响应内容。');
     }
-    console.log('Diagnose raw output:', raw); // 关键日志，方便终端查看
+    console.log('Diagnose raw output:', content);
 
     // 提取 JSON：找第一个 { 和最后一个 } 之间的内容
-    const jsonStart = raw.indexOf('{');
-    const jsonEnd = raw.lastIndexOf('}');
+    const jsonStart = content.indexOf('{');
+    const jsonEnd = content.lastIndexOf('}');
     if (jsonStart === -1 || jsonEnd === -1) {
-      throw new Error('模型未返回有效的 JSON 对象。原始输出: ' + raw);
+      throw new Error('模型未返回有效的 JSON 对象。原始输出: ' + content);
     }
-    const jsonString = raw.slice(jsonStart, jsonEnd + 1);
+    const jsonString = content.slice(jsonStart, jsonEnd + 1);
 
     let parsed;
     try {
