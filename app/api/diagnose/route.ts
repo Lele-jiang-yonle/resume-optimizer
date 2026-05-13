@@ -50,7 +50,10 @@ export async function POST(req: NextRequest) {
       ],
     });
 
-    const raw = response.choices[0].message.content.trim();
+    const raw = response.choices?.[0]?.message?.content?.trim();
+    if (!raw) {
+      throw new Error('模型未返回有效的响应内容。');
+    }
     console.log('Diagnose raw output:', raw); // 关键日志，方便终端查看
 
     // 提取 JSON：找第一个 { 和最后一个 } 之间的内容
