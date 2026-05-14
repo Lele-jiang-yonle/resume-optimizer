@@ -128,23 +128,23 @@ export default function Home() {
   };
 
   return (
-    <div style={{
+    <div className="p-3 sm:p-5 md:p-6" style={{
       fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif",
-      background: '#f5f7fa', display: 'flex', justifyContent: 'center', padding: '24px', minHeight: '100vh',
+      background: '#f5f7fa', display: 'flex', justifyContent: 'center', minHeight: '100vh',
     }}>
       <div style={{
         maxWidth: '1100px', width: '100%', background: '#fff', borderRadius: '20px',
         boxShadow: '0 8px 40px rgba(0,0,0,0.06)', overflow: 'hidden',
       }}>
         {/* ========== 头部 ========== */}
-        <div style={{ padding: '28px 36px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className="px-4 md:px-9 pt-5 md:pt-7" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ fontSize: '22px', fontWeight: 700, color: '#1e293b', display: 'flex', alignItems: 'center', gap: '8px' }}>
             📝 <span style={{ background: 'linear-gradient(135deg, #3b82f6, #6366f1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>简历优化助手</span>
           </div>
         </div>
 
         {/* ========== 步骤指示器 ========== */}
-        <div style={{ display: 'flex', gap: '28px', padding: '20px 36px', borderBottom: '1px solid #f1f5f9' }}>
+        <div className="flex flex-wrap gap-x-4 md:gap-x-7 gap-y-2 px-4 md:px-9 py-4 md:py-5" style={{ borderBottom: '1px solid #f1f5f9' }}>
           {['上传诊断', '互动提问', '优化结果'].map((label, i) => (
             <div key={i} className={getStepClass(i + 1)} style={{
               display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px',
@@ -163,9 +163,9 @@ export default function Home() {
         </div>
 
         {/* ========== 主体内容 ========== */}
-        <div style={{ display: 'flex', minHeight: '520px' }}>
+        <div className="flex flex-col md:flex-row" style={{ minHeight: '520px' }}>
           {/* ===== 左侧边栏 ===== */}
-          <div style={{ width: '380px', padding: '28px', borderRight: '1px solid #f1f5f9', display: 'flex', flexDirection: 'column', gap: '18px' }}>
+          <div className="w-full md:w-[380px] md:border-r md:border-[#f1f5f9] p-4 md:p-7" style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
             {/* 阶段一：上传 */}
             {(stage === 'upload' || stage === 'diagnosing') && (
               <>
@@ -267,7 +267,7 @@ export default function Home() {
           </div>
 
           {/* ===== 右侧预览区 ===== */}
-          <div style={{ flex: 1, padding: '28px', overflowY: 'auto', maxHeight: '600px' }}>
+          <div className="p-4 md:p-7 right-panel" style={{ flex: 1, overflowY: 'auto', maxHeight: '600px' }}>
             {/* 空状态 */}
             {(stage === 'upload' || stage === 'diagnosing') && (
               <div>
@@ -369,9 +369,10 @@ export default function Home() {
                               });
                             }}
                             style={{
-                              padding: '6px 14px',
+                              padding: '8px 16px',
                               border: `1px solid ${answers[String(qItem.id)] === optLetter ? '#3b82f6' : '#e2e8f0'}`,
-                              borderRadius: '20px', fontSize: '12px', cursor: 'pointer',
+                              borderRadius: '20px', fontSize: '13px', cursor: 'pointer', minHeight: '40px',
+                              display: 'flex', alignItems: 'center',
                               background: answers[String(qItem.id)] === optLetter ? '#3b82f6' : '#fff',
                               color: answers[String(qItem.id)] === optLetter ? '#fff' : '#334155',
                             }}
@@ -390,7 +391,7 @@ export default function Home() {
             {stage === 'result' && result && (
               <div style={{ animation: 'fadeIn 0.3s ease' }}>
                 <h3 style={{ fontSize: '15px', color: '#1e293b', marginBottom: '12px' }}>✨ 优化结果对比</h3>
-                <div style={{ display: 'flex', gap: '16px' }}>
+                <div className="flex flex-col md:flex-row gap-3 md:gap-4">
                   <div style={{
                     flex: 1, background: '#fafbfc', borderRadius: '12px', padding: '16px',
                     border: '1px solid #f1f5f9', maxHeight: '500px', overflowY: 'auto',
@@ -424,6 +425,11 @@ export default function Home() {
           0% { width: 20%; }
           50% { width: 70%; }
           100% { width: 95%; }
+        }
+        @media (max-width: 767px) {
+          .right-panel {
+            max-height: none !important;
+          }
         }
       `}</style>
     </div>
