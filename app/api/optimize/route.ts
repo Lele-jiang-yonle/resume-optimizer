@@ -50,6 +50,7 @@ const SYSTEM_PROMPT = `
 3. 【关键提升点】（3-5条核心改动方向）
 
 **不要生成修改批注或对比表格。**
+**不要使用 Markdown 加粗（**）、代码块等格式标记，纯文本输出。
 `;
 
 export async function POST(req: NextRequest) {
